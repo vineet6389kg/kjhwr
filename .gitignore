@@ -1,0 +1,16 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+.env
+
+# Node
+node_modules/
+dist/
+
+# Data cache (re-created automatically)
+backend/cache/*.csv
+
+# OS / editor
+.DS_Store
+.vscode/
