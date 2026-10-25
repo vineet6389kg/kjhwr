@@ -1,19 +1,27 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { FiActivity, FiAlertCircle, FiTarget, FiTrendingUp } from 'react-icons/fi'
 import useFetch from '../hooks/useFetch'
 import { getComparison, getLatest, getMetrics } from '../services/api'
+import { useDecisionHour } from '../context/DecisionHourContext'
+import { applyFilters, EMPTY_FILTERS } from '../utils/filters'
+import { fmtDateTime, fmtMW, fmtPct } from '../utils/format'
 import StatCard from '../components/StatCard'
 import ErrorState from '../components/ErrorState'
-import ForecastChart from '../components/ForecastChart'
-import { fmtDateTime, fmtMW, fmtPct } from '../utils/format'
-
-const HOURS = [6, 8, 10, 12, 14, 16]
+import ChartCard from '../components/ChartCard'
+import DecisionHourSelect from '../components/DecisionHourSelect'
+import FilterBar from '../components/FilterBar'
+import DataTable from '../components/DataTable'
+import ForecastChart from '../components/charts/ForecastChart'
 
 export default function Dashboard() {
-  const [hour, setHour] = useState(12) // assumed decision time (UTC) on the day before delivery
+  const { hour } = useDecisionHour()
   const metrics = useFetch(() => getMetrics(hour), [hour])
   const latest = useFetch(() => getLatest(hour), [hour])
   const comparison = useFetch(() => getComparison(hour), [hour])
+
+  const [filters, setFilters] = useState(EMPTY_FILTERS)
+  const all = comparison.data ?? []
+  const filtered = useMemo(() => applyFilters(all, filters), [all, filters])
 
   const m = metrics.data
   const l = latest.data
@@ -33,18 +41,7 @@ export default function Dashboard() {
           <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
           <p className="text-sm text-muted">Wind forecast available at decision time vs actual generation</p>
         </div>
-        <label className="text-sm">
-          <span className="mb-1 block text-muted">Decision time (day before, UTC)</span>
-          <select
-            value={hour}
-            onChange={(e) => setHour(Number(e.target.value))}
-            className="rounded-xl border border-border-strong bg-surface px-3 py-2"
-          >
-            {HOURS.map((h) => (
-              <option key={h} value={h}>{String(h).padStart(2, '0')}:00</option>
-            ))}
-          </select>
-        </label>
+        <DecisionHourSelect />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -60,17 +57,21 @@ export default function Dashboard() {
         <StatCard label="MAPE" value={fmtPct(m?.mape)} hint="Error as % of actual" loading={metrics.loading} />
         <StatCard label="Bias" value={fmtMW(m?.bias)} hint={biasText} loading={metrics.loading} />
       </div>
+      <p className="-mt-3 text-xs text-muted">Cards above cover the whole of January 2026. Filters below apply to the chart and table.</p>
 
-      <section className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
-        <h2 className="mb-4 font-semibold">Forecast vs Actual</h2>
-        {comparison.loading ? (
-          <div className="h-80 animate-pulse rounded-xl bg-raised" />
-        ) : comparison.data?.length ? (
-          <ForecastChart data={comparison.data} />
-        ) : (
-          <p className="py-16 text-center text-muted">No data for this decision time.</p>
-        )}
-      </section>
+      <FilterBar
+        filters={filters}
+        onChange={setFilters}
+        onReset={() => setFilters(EMPTY_FILTERS)}
+        shown={filtered.length}
+        total={all.length}
+      />
+
+      <ChartCard title="Forecast vs Actual" height="h-80" loading={comparison.loading} empty={!filtered.length}>
+        <ForecastChart data={filtered} />
+      </ChartCard>
+
+      <DataTable rows={filtered} loading={comparison.loading} />
     </div>
   )
 }
