@@ -63,3 +63,5 @@ body {
   color: var(--c-fg);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
+
+[data-theme="dark"] { color-scheme: dark; }
