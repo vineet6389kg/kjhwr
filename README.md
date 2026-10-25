@@ -2,10 +2,17 @@
 
 A web app that helps a UK energy utility's day-ahead trading team understand **which wind forecast was available when they had to decide**, and **how accurate it was**.
 
-> **AI disclosure:**AI tools, including Claude, were used to assist with brainstorming, code generation, and documentation. All generated content was reviewed, tested, and adapted, and I understand the implementation and functionality of the final solution.
+> **AI disclosure:** AI tools, including Claude, were used to assist with brainstorming, code generation, and documentation. All generated content was reviewed, tested, and adapted, and I understand the implementation and functionality of the final solution.
 
-**Live app:** `<FRONTEND_URL>`
-**API:** `<BACKEND_URL>` (interactive docs at `<BACKEND_URL>/docs`)
+## Links
+
+| | |
+|---|---|
+| **Live app** | https://kjhwr-xuyk.vercel.app |
+| **API** | https://kjhwr-pi.vercel.app |
+| **API docs (interactive)** | https://kjhwr-pi.vercel.app/docs |
+| **Source code** | https://github.com/vineet6389kg/kjhwr |
+| **Video demo (unlisted)** | `<YOUTUBE_URL>` |
 
 ## Problem
 
@@ -18,7 +25,7 @@ Scope: national-level wind only, Elexon data only (`FUELHH` actuals, `WINDFOR` f
 
 ## Key method
 
-Many forecasts are published for each half-hour slot. For every target time we keep **only the latest forecast published before the decision cut-off** (default: 12:00 UTC on the day before delivery), then join it to the actual generation for the same time. Error = forecast − actual.
+Many forecasts are published for each time slot, and some are published after the slot they forecast, which a trader could never have used. For every target time we keep **only the latest forecast published before the decision cut-off** (default: 12:00 UTC on the day before delivery), then join it to the actual generation for the same time. Error = forecast − actual.
 
 The cut-off is an **assumption**, so it is adjustable in the UI (06:00 to 16:00). Reviewers can see how accuracy changes with decision time.
 
@@ -37,7 +44,7 @@ flowchart LR
 
 - **Frontend:** React (Vite), Tailwind CSS v4, React Router, Axios, Recharts, React Icons
 - **Backend:** Python, FastAPI, pandas, NumPy, Requests
-- **Infra:** Docker, Docker Compose, Vercel
+- **Infra:** Docker, Docker Compose, Vercel (frontend and backend as two projects)
 
 ## Repository structure
 
@@ -54,7 +61,7 @@ flowchart LR
 │   └── Dockerfile
 ├── frontend/
 │   ├── src/
-│   │   ├── pages/             Dashboard, Analytics, About
+│   │   ├── pages/             Dashboard, Analytics, About, NotFound
 │   │   ├── components/        Layout, Sidebar, Navbar, StatCard, FilterBar, DataTable, charts/
 │   │   ├── context/           shared decision-time state
 │   │   ├── hooks/             useFetch, useTheme
@@ -86,11 +93,11 @@ uvicorn app:app --reload
 
 # frontend (new terminal)
 cd frontend
-cp .env.example .env
+cp .env.example .env         # Windows PowerShell: copy .env.example .env
 npm install
 npm run dev
 ```
-Frontend: http://localhost:5173.
+Frontend: http://localhost:5173. The frontend reads the API address from `VITE_API_URL` (see `.env.example`).
 
 ## API endpoints
 
@@ -110,7 +117,7 @@ Frontend: http://localhost:5173.
 - Data table with search, sorting, pagination and CSV export
 - Filters: date, time of day, generation range, forecast publish date, plus reset
 - Adjustable decision time
-- Light/dark theme, responsive layout, loading skeletons, error and empty states with retry
+- Light/dark theme, responsive layout, loading skeletons, error and empty states with retry, 404 page
 
 ## Key findings (January 2026)
 
@@ -129,7 +136,7 @@ Accuracy of the latest forecast available at different assumed decision times (d
 ## Assumptions and limitations
 
 - Decision cut-off of 12:00 UTC the day before is assumed, not an official rule.
-- Data is hourly where forecasts exist; only timestamps present in both datasets are compared.
+- Forecasts are hourly and actuals are half-hourly, so only timestamps present in both datasets are compared (744 hours in January).
 - MAPE skips hours where actual generation is zero.
 - Filters apply to the chart and table; summary metrics cover the whole month.
 - All times are UTC (equal to UK time in January).
@@ -140,6 +147,7 @@ Accuracy of the latest forecast available at different assumed decision times (d
 - Test suite for the processor and metrics
 - Live refresh from Elexon on a schedule instead of a static snapshot
 - Compare several decision times side by side
+- Test a simple bias adjustment using more months of data
 
 ## My journey
 
@@ -155,3 +163,7 @@ I came into this project knowing **Python and React**, but with two firsts: I ha
 I used AI tools (Claude) as a guide and pair-programmer, as disclosed above. I ran each step, checked the results against the API and the charts, and committed after every component so the git history shows the build order. Where I'm unsure, I've listed it under *Assumptions and limitations* instead of hiding it.
 
 This project taught me a lot in a short time, and I would happily take on the improvements listed above.
+
+## Author
+
+Vineet Kumar · [LinkedIn](https://www.linkedin.com/in/vineet-kumar-046373329/)
