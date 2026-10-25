@@ -14,6 +14,25 @@ A web app that helps a UK energy utility's day-ahead trading team understand **w
 | **Source code** | https://github.com/vineet6389kg/kjhwr |
 | **Video demo (unlisted)** | `<YOUTUBE_URL>` |
 
+
+## Screenshots
+
+| Light mode | Dark mode |
+|---|---|
+| ![Dashboard in light mode](docs/screenshots/dashboard-light.png) | ![Dashboard in dark mode](docs/screenshots/dashboard-dark.png) |
+
+**Analytics: error trend, daily averages, over/under split and error distribution**
+
+![Analytics page](docs/screenshots/analytics.png)
+
+**Filters and data table (search, sort, pagination, CSV export)**
+
+![Filters and data table](docs/screenshots/table-filters.png)
+
+**Responsive layout on mobile**
+
+<img src="docs/screenshots/mobile.png" width="260" alt="Dashboard on a mobile screen">
+
 ## Problem
 
 A utility buys power on the UK day-ahead market, and decisions for delivery day D are made on day D−1. Wind generation is weather-dependent, so the team relies on forecasts to decide how much extra power (e.g. from thermal plants) to buy. This app:
