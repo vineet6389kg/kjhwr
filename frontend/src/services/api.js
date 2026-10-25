@@ -1,7 +1,11 @@
 import axios from 'axios'
 
-// Remove trailing slashes so "https://x.vercel.app/" doesn't produce "//comparison"
-const API_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000').replace(/\/+$/, '')
+// Clean up the configured API address:
+//  - add https:// if it was forgotten (a bare "x.vercel.app" would be treated as a relative path)
+//  - remove trailing slashes, so we never produce "//comparison"
+const raw = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000').trim()
+const withProtocol = /^https?:\/\//.test(raw) ? raw : `https://${raw}`
+const API_URL = withProtocol.replace(/\/+$/, '')
 
 const api = axios.create({
   baseURL: API_URL,
