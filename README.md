@@ -112,6 +112,20 @@ Frontend: http://localhost:5173.
 - Adjustable decision time
 - Light/dark theme, responsive layout, loading skeletons, error and empty states with retry
 
+## Key findings (January 2026)
+
+Accuracy of the latest forecast available at different assumed decision times (day before delivery, UTC):
+
+| Decision time | MAE (MW) | RMSE (MW) | MAPE | Bias (MW) |
+|---|---|---|---|---|
+| 06:00 | 2,129 | 2,632 | 21.9% | +1,798 |
+| 12:00 (default) | 2,003 | 2,470 | 19.5% | +1,806 |
+| 16:00 | 1,968 | 2,435 | 18.3% | +1,817 |
+
+- Later decisions use newer forecasts and are somewhat more accurate (MAE about 8% lower from 06:00 to 16:00), with diminishing returns.
+- Bias stays at about +1.8 GW at every decision time: forecasts are consistently too high, so planning purchases around the raw forecast risks under-buying. Waiting for a newer forecast does not remove this.
+- These results come from one month of data and are not proof of cause. The decision times are assumptions, not the real auction gate closure.
+
 ## Assumptions and limitations
 
 - Decision cut-off of 12:00 UTC the day before is assumed, not an official rule.
