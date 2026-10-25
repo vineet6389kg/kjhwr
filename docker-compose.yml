@@ -3,10 +3,6 @@ services:
     build: ./backend
     ports:
       - "8000:8000"
-    volumes:
-      # Keeps the downloaded Elexon CSVs between restarts,
-      # so the slow first download happens only once.
-      - backend-cache:/app/cache
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
       interval: 10s
@@ -27,5 +23,3 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
-volumes:
-  backend-cache:
