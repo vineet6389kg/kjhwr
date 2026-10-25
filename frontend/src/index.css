@@ -1,111 +1,65 @@
+@import "tailwindcss";
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --c-bg: oklch(0.97846 0.00453 258.325);
+  --c-surface: oklch(0.93992 0.0063 258.696);
+  --c-raised: oklch(0.90909 0.00771 258.993);
+  --c-fg: oklch(0.20768 0.03982 265.755);
+  --c-muted: oklch(0.53141 0.025 262.634);
+  --c-border: oklch(0.20768 0.03982 265.755 / 0.14);
+  --c-border-strong: oklch(0.20768 0.03982 265.755 / 0.26);
+  --c-accent-solid: oklch(0.4882 0.21717 264.376);
+  --c-accent-solid-fg: oklch(0.99 0.006 264.376);
+  --c-accent-hover: oklch(0.5482 0.21717 264.376);
+  --c-secondary: oklch(0.54615 0.21521 262.881);
+  --c-secondary-fg: oklch(0.99 0.006 262.881);
+  --c-info: oklch(0.59597 0.12742 163.225);
+  --c-success: oklch(0.62 0.15 150);
+  --c-warning: oklch(0.72 0.15 75);
+  --c-error: oklch(0.58 0.19 27);
+  /* my additions: readable text versions of the brand colours */
+  --c-primary-text: oklch(0.4882 0.21717 264.376);
+  --c-accent-text: oklch(0.5 0.12 163);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+[data-theme="dark"] {
+  --c-bg: oklch(0.1689 0.02003 265.786);
+  --c-surface: oklch(0.20751 0.01972 265.414);
+  --c-raised: oklch(0.2384 0.01946 265.117);
+  --c-fg: oklch(0.94115 0.01375 258.346);
+  --c-muted: oklch(0.76216 0.01639 261.471);
+  --c-border: oklch(0.94115 0.01375 258.346 / 0.14);
+  --c-border-strong: oklch(0.94115 0.01375 258.346 / 0.26);
+  --c-success: oklch(0.72 0.15 150);
+  --c-warning: oklch(0.8 0.15 75);
+  --c-error: oklch(0.66 0.19 27);
+  --c-primary-text: oklch(0.72 0.14 264);
+  --c-accent-text: oklch(0.72 0.14 163);
+}
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+/* Map the tokens to Tailwind utility names: bg-bg, text-fg, bg-surface, bg-primary, ... */
+@theme inline {
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-raised: var(--c-raised);
+  --color-fg: var(--c-fg);
+  --color-muted: var(--c-muted);
+  --color-border: var(--c-border);
+  --color-border-strong: var(--c-border-strong);
+  --color-primary: var(--c-accent-solid);
+  --color-primary-fg: var(--c-accent-solid-fg);
+  --color-primary-hover: var(--c-accent-hover);
+  --color-primary-text: var(--c-primary-text);
+  --color-secondary: var(--c-secondary);
+  --color-accent: var(--c-info);
+  --color-accent-text: var(--c-accent-text);
+  --color-success: var(--c-success);
+  --color-warning: var(--c-warning);
+  --color-error: var(--c-error);
 }
 
 body {
-  margin: 0;
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  background: var(--c-bg);
+  color: var(--c-fg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
