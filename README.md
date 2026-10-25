@@ -2,7 +2,7 @@
 
 A web app that helps a UK energy utility's day-ahead trading team understand **which wind forecast was available when they had to decide**, and **how accurate it was**.
 
-> **AI disclosure:** AI tools, including Claude, were used to assist with brainstorming, code generation, and documentation. All generated content was reviewed, tested, and adapted, and I understand the implementation and functionality of the final solution.
+
 
 ## Links
 
@@ -151,6 +151,8 @@ Accuracy of the latest forecast available at different assumed decision times (d
 - Later decisions use newer forecasts and are somewhat more accurate (MAE about 8% lower from 06:00 to 16:00), with diminishing returns.
 - Bias stays at about +1.8 GW at every decision time: forecasts are consistently too high, so planning purchases around the raw forecast risks under-buying. Waiting for a newer forecast does not remove this.
 - These results come from one month of data and are not proof of cause. The decision times are assumptions, not the real auction gate closure.
+
+> **AI disclosure:** AI tools, including Claude, were used to assist with brainstorming, code generation, and documentation. All generated content was reviewed, tested, and adapted, and I understand the implementation and functionality of the final solution.
 
 ## Assumptions and limitations
 
