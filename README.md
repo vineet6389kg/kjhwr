@@ -126,3 +126,18 @@ Frontend: http://localhost:5173.
 - Test suite for the processor and metrics
 - Live refresh from Elexon on a schedule instead of a static snapshot
 - Compare several decision times side by side
+
+## My journey
+
+I came into this project knowing **Python and React**, but with two firsts: I had **never used Docker**, and I had **never built a data project** (working with real datasets, joining them and measuring accuracy).
+
+**What was new to me**
+- **Data work:** the hardest idea was that a forecast isn't one number. Many forecasts exist for the same time slot, so the real question is *which one was available when the trader had to decide*. Solving this with pandas (cut-off time, latest forecast, join with actuals) taught me to think about data in terms of time, not just columns.
+- **Forecast accuracy metrics:** I learned what MAE, RMSE, MAPE and bias each tell a decision-maker, and why the sign of the bias matters more than the average size of the error in a purchasing context.
+- **Docker:** I learned the difference between a Dockerfile, an image and a container, why a React app is built and served by nginx in production, and why the browser must call the backend at `localhost`, not at the container name.
+- **Deployment constraints:** I found that serverless platforms have read-only filesystems, which led me to ship a committed data snapshot with a download fallback.
+
+**How I worked**
+I used AI tools (Claude) as a guide and pair-programmer, as disclosed above. I ran each step, checked the results against the API and the charts, and committed after every component so the git history shows the build order. Where I'm unsure, I've listed it under *Assumptions and limitations* instead of hiding it.
+
+This project taught me a lot in a short time, and I would happily take on the improvements listed above.
