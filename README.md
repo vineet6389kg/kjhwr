@@ -12,7 +12,7 @@ A web app that helps a UK energy utility's day-ahead trading team understand **w
 | **API** | https://kjhwr-pi.vercel.app |
 | **API docs (interactive)** | https://kjhwr-pi.vercel.app/docs |
 | **Source code** | https://github.com/vineet6389kg/kjhwr |
-| **Video demo (unlisted)** | `<YOUTUBE_URL>` |
+| **Video demo (unlisted)** | https://youtu.be/bWtzelShEZ8 |
 
 
 ## Screenshots
